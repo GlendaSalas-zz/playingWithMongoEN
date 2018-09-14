@@ -86,6 +86,18 @@ app.get('/todos/:id',(req,res)=>{
     });
 
   }); // UPDATE ITEMS
+  ///NEW USER----------------
+  app.post('/user',(req,res)=>{
+    var body= _.pick(req.body,['email','password']);
+    var user= new User(body);
+    user.save().then((doc)=>{
+      res.send({doc});
+    }).catch((e)=>{
+        // console.log(e);
+        return res.status(400).send('NO error catch  LLL');
+    });
+
+  });
   app.listen(port,()=>{
     console.log(`Started on port ${port}`);
   });
