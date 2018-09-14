@@ -90,11 +90,13 @@ app.get('/todos/:id',(req,res)=>{
   app.post('/user',(req,res)=>{
     var body= _.pick(req.body,['email','password']);
     var user= new User(body);
-    user.save().then((doc)=>{
-      res.send({doc});
+    console.log(user);
+    user.save().then(()=>{
+      return user.generateAuthToken();
+    }).then((token)=>{
+      res.header('x-auth',token).send(user);
     }).catch((e)=>{
-        // console.log(e);
-        return res.status(400).send('NO error catch  LLL');
+        return res.status(400).send('NO error catch');
     });
 
   });
