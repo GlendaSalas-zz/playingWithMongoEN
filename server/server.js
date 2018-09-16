@@ -11,8 +11,9 @@ var  {User}= require('./models/user.js');
 var  {authenticate}= require('./middleware/authenticate.js');
 
 var app=express();
-const port=process.env.PORT || 3000;
-
+const port=process.env.PORT;
+console.log('HEY');
+console.log(process.env.PORT);
 app.use(bodyParser.json());
 
 app.post('/todos',authenticate,(req,res)=>{
