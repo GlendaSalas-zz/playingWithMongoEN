@@ -46,6 +46,14 @@ UserSchema.methods.generateAuthToken= function (){
     return token;
   }).catch((e)=>{console.log(`Error ${e}`);});
 }; // instant methods
+UserSchema.methods.removeToken= function(token){
+  var user= this;
+  return user.updateOne({
+    $pull:{
+      tokens:{token}
+    }
+  });
+}
 UserSchema.statics.findByToken= function(token){
   var User=this;
   try{
