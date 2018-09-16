@@ -1,3 +1,5 @@
+require('./config/config');
+
 const _ = require('lodash');
 const express=require('express');
 const bodyParser = require('body-parser')
@@ -105,8 +107,10 @@ app.get('/todos/:id',authenticate,(req,res)=>{
     user.save().then(()=>{
       return user.generateAuthToken();
     }).then((token)=>{
+      console.log(token);
       res.header('x-auth',token).send(user);
     }).catch((e)=>{
+      console.log('CATCH');
       res.status(401).send(e);
     });
 
