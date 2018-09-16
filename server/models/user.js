@@ -38,19 +38,24 @@ UserSchema.methods.toJSON= function (){
 UserSchema.methods.generateAuthToken= function (){
   var user =this;
   var access='auth';
-  var token = jwt.sign({_id:user._id.toHexString(), access}, user.password).toString();
+  var token = jwt.sign({_id:user._id.toHexString(), access}, 'glenda1234').toString();
   user.tokens.push({ access,token });
   return user.save().then(()=>{
     return token;
   }).catch((e)=>{console.log(`Error ${e}`);});
 }; // instant methods
+UserSchema.statics.findByToken= function(token){
+  var User=this;
+  try{
+    var decoded=jwt.verify(token, 'glenda1234');
+  }catch(e){
+    return Promise.reject();
+  }
+  return User.findOne({
+    _id:decoded._id,
+    'tokens.token':token,
+    'tokens.access':'auth'
+  });
+}
 var User=mongoose.model('User',UserSchema);
 module.exports={User}
-// var newUser= new User({
-//   email:'     glenda.salas.a@gmail.com    '
-// });
-// newUser.save().then((doc)=>{
-//   console.log('Save user', doc);
-// },(err)=>{
-//   console.log('Error',err.name);
-// });
